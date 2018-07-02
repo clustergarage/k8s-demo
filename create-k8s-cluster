@@ -34,5 +34,7 @@ done
 wait ${PID[*]}
 
 scp ./resource/{svc_acct.yaml,cluster_role_binding.yaml,kubernetes-dashboard.yaml} ts1:
-ssh ts1 'kubectl apply -f $HOME/{svc_acct.yaml,cluster_role_binding.yaml,kubernetes-dashboard.yaml}'
+ssh ts1 'kubectl apply -f $HOME/svc_acct.yaml'
+ssh ts1 'kubectl apply -f $HOME/cluster_role_binding.yaml'
+ssh ts1 'kubectl apply -f $HOME/kubernetes-dashboard.yaml'
 echo "done"
