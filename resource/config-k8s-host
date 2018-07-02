@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+echo "$node: adding repos"
+apt update
+apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+    apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+echo "$node: installing Docker and Kubernetes"
+apt-get update
+apt-get install -y docker.io kubelet kubeadm kubectl
+
+echo "$node: disabling swap"
+swapoff --all 
+sed -i '/swap/d' /etc/fstab
+mount -a
+systemctl enable docker.service
+
