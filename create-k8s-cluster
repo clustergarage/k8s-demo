@@ -1,12 +1,14 @@
-#!/bin/bash -e
+#!/bin/bash
 
 echo "Configuring hosts..."
 for node in ts{1..4}; do
+  ssh-keygen -f "$HOME/.ssh/known_hosts" -R "${node}.maas"
   echo "$node: uploading configuration"
   scp ./resource/config-k8s-host $node:
   echo "$node: Base configuring"
   ssh $node "sudo node=$node ./config-k8s-host" &
-  PID[$node]=$!
+  echo PID[${node: -1}]=$!
+  PID[${node: -1}]=$!
 done
 
 wait ${PID[*]}
